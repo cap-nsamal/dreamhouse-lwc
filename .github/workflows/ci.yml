@@ -70,7 +70,7 @@ jobs:
              # run: |
                #   echo ${{ secrets.DEVHUB_SFDX_URL_1}} > ./SFDX_URL_1_STORE.txt 
                #   echo ${{ secrets.DEVHUB_SFDX_URL}} > ./SFDX_URL_STORE.txt
-              run: sf org display --target-org Devorg --verbose --json > authFile.json
+              run: sf org display --target-org DevHub --verbose --json > authFile.json
 
             # Authenticate dev hub
             - name: 'Authenticate Dev Hub'
