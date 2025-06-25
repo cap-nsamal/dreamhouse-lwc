@@ -66,14 +66,15 @@ jobs:
 
             # Store secret for dev hub
             - name: 'Populate auth file with DEVHUB_SFDX_URL secret'
-              shell: bash
-              run: |
-                  echo ${{ secrets.DEVHUB_SFDX_URL_1}} > ./SFDX_URL_1_STORE.txt 
-                  echo ${{ secrets.DEVHUB_SFDX_URL}} > ./SFDX_URL_STORE.txt
+              #shell: bash
+             # run: |
+               #   echo ${{ secrets.DEVHUB_SFDX_URL_1}} > ./SFDX_URL_1_STORE.txt 
+               #   echo ${{ secrets.DEVHUB_SFDX_URL}} > ./SFDX_URL_STORE.txt
+              run: sf org display --target-org Devorg --verbose --json > authFile.json
 
             # Authenticate dev hub
             - name: 'Authenticate Dev Hub'
-              run: sf org login sfdx-url -f ./SFDX_URL_STORE.txt -a DevHub -d
+              run: sf org login sfdx-url authFile.json
 
             # Create scratch org
             - name: 'Create scratch org'
