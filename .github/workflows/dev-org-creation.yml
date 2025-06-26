@@ -74,45 +74,33 @@ on:
           Scratch Org.
 jobs:
   create-scratch-org:
-    name: Create the Scratch Org
-    runs-on:
-      - ubuntu-latest
-    container:
-      # Using `full` variant of the image to have `jq` utility available:
-      image: salesforce/cli:2.67.7-full
-    env:
-      DEVHUB_SFDX_URL: ${{ secrets.DEVHUB_SFDX_URL }}
-      SCRATCH_ORG_POOL_TAG: dev
-      CREATION_METHOD: ${{ inputs.creation-method }}
-    steps:
-      - name: Ensure Presence of Required Inputs
-        run: |
-          status=0
-          if [ -z "$DEVHUB_SFDX_URL" ]; then
-            echo '::error::"DEVHUB_SFDX_URL" secret not set.'
-            status=1
-          fi
-          exit $((status))
-      - name: Checkout the Codebase
-        uses: actions/checkout@v4
-      - name: Authorize to the DevHub (SFDX Auth URL)
-        if: ${{ env.DEVHUB_SFDX_URL }}
-        run: |
-          printf %s "$DEVHUB_SFDX_URL" \
-          | sf org login sfdx-url \
-            --json \
-            --set-default-dev-hub \
-            --sfdx-url-file /dev/stdin \
-          ;
-          echo ORG_AUTHORIZED=true >> "$GITHUB_ENV"
-      - name: Dump Scratch Org Main Authorization Details
-        run: |
-          sf org display \
-            --json \
-            --verbose \
-            > scratch-org-authfile.json \
-          ;
-      # create-user
+      runs-on: ubuntu-latest
+      steps:
+            # Install Salesforce CLI
+            - name: 'Install Salesforce CLI'
+              run: |
+                  npm install @salesforce/cli --location=global
+                  nodeInstallPath=$(npm config get prefix)
+                  echo "$nodeInstallPath/bin" >> $GITHUB_PATH
+                  sf --version
+
+            # Checkout the source code
+            - name: 'Checkout source code'
+              uses: actions/checkout@v4
+
+            # Store secret for dev hub
+            - name: 'Populate auth file with DEVHUB_SFDX_URL secret'
+              shell: bash
+              run: "echo ${{ secrets.DEVHUB_SFDX_URL}} > ./SFDX_URL_STORE.txt"
+
+            # Authenticate dev hub
+            - name: 'Authenticate Dev Hub'
+              run: sf org login sfdx-url -f ./SFDX_URL_STORE.txt -a devhub -d
+
+            # Create scratch org
+            - name: 'Create scratch org'
+              run: sf org create scratch -f config/project-scratch-def.json -a scratch-org -d -y 1   # create-user
+      # Create scratch org
       - name: "Create New User"
         run: |        
           sf org create user username=testuser1@my.org email=me@my.org permsets=abc generatepassword=true --set-unique-username
