@@ -81,7 +81,7 @@ jobs:
       # Using `full` variant of the image to have `jq` utility available:
       image: salesforce/cli:2.67.7-full
     env:
-      DEVHUB_SFDX_AUTH_URL: ${{ secrets.DEVHUB_SFDX_URL }}
+      DEVHUB_SFDX_URL: ${{ secrets.DEVHUB_SFDX_URL }}
       SCRATCH_ORG_POOL_TAG: dev
       CREATION_METHOD: ${{ inputs.creation-method }}
     steps:
@@ -94,7 +94,7 @@ jobs:
           fi
           exit $((status))
       - name: Checkout the Codebase
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Authorize to the DevHub (SFDX Auth URL)
         if: ${{ env.DEVHUB_SFDX_URL }}
         run: |
@@ -132,15 +132,11 @@ jobs:
           scratch-org-exclusive: >-
             ${{ inputs.deploy-codebase }}
       - name: Share Scratch Org Authorization Files
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: authfiles
           path: ./scratch-org-authfile*.json
           retention-days: ${{ inputs.scratch-org-validity || 1 }}
-      - name: Delete the Scratch Org upon Failure
-        if: ${{ failure() && env.SCRATCH_ORG_CREATED }}
-        run: |
-          sf org delete scratch --json --no-prompt
       - name: Log Out from the Orgs
         if: ${{ always() && env.ORG_AUTHORIZED }}
         run: |
