@@ -4,12 +4,12 @@ name: DevHubCI
 # Definition when the workflow should run
 on:
     workflow_dispatch:
-    push:
-        branches:
-            - main
-        paths-ignore:
-            - 'sfdx-project.json'
-            - 'README.md'
+    #push:
+       # branches:
+        #    - main
+        # paths-ignore:
+          #  - 'sfdx-project.json'
+           # - 'README.md'
 
 # Jobs to be executed
 jobs:
@@ -65,9 +65,11 @@ jobs:
             # Store secret for dev hub
             - name: 'Populate auth file with DEVHUB_SFDX_URL secret'
               shell: bash
-                run:|
+                run: |
+                  echo ${{ secrets.DEVHUB_SFDX_URL_1}} > ./SFDX_URL_1_STORE.txt 
                   echo ${{ secrets.DEVHUB_SFDX_URL}} > ./SFDX_URL_STORE.txt 
-             
+              # run: echo "${{ secrets.SALESFORCE_JWT_SECRET_KEY }}" > server.key
+
             # Authenticate dev hub
             - name: 'Authenticate Dev Hub'
               run: sf org login sfdx-url -f ./SFDX_URL_STORE.txt -a DevHub -d
