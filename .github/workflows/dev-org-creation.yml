@@ -76,9 +76,7 @@ jobs:
   create-scratch-org:
     name: Create the Scratch Org
     runs-on:
-      - self-hosted
-      - road-runner
-      - small
+      - ubuntu-latest
     container:
       # Using `full` variant of the image to have `jq` utility available:
       image: salesforce/cli:2.67.7-full
