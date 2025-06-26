@@ -77,10 +77,14 @@ jobs:
             - name: 'Create scratch org'
               run: sf org create scratch -f config/project-scratch-def.json -a scratch-org -d -y 1
               
-             # Create New User
+            # Create New User
             - name: 'Create New User'
               run: sf org create user username=samal.nihar@gmail.com email=samal.nihar@gmail.com generatepassword=true --set-unique-username
-       
+            
+            # Apply PreDeployment Steps in default org
+            - name: 'Apply Pre-Deployment step'
+              run: sf org disable tracking
+           
             # Deploy source to scratch org
             - name: 'Push source to scratch org'
               run: sf project deploy start
@@ -89,6 +93,11 @@ jobs:
             - name: 'Assign permissionset to default user'
               run: sf org assign permset -n dreamhouse
 
+            # Apply Post Deployment Step
+            - name: 'Apply Post Deployment Step'
+              run: sf org enable tracking
+              # run: sf project deploy start --manifest manifest/deployPackage.xml --postdestructivechanges manifest/destructiveChangesPost.xml
+                
             # Import sample data
             - name: 'Import sample data'
               run: sf data tree import -p ./data/sample-data-plan.json
