@@ -65,7 +65,7 @@ jobs:
             # Store secret for dev hub
             - name: 'Populate auth file with DEVHUB_SFDX_URL secret'
               shell: bash
-                run:|
+              run: |
                   echo ${{ secrets.DEVHUB_SFDX_URL_1}} > ./SFDX_URL_1_STORE.txt 
                   echo ${{ secrets.DEVHUB_SFDX_URL}} > ./SFDX_URL_STORE.txt 
               # run: echo "${{ secrets.SALESFORCE_JWT_SECRET_KEY }}" > server.key
