@@ -83,24 +83,24 @@ jobs:
       # Using `full` variant of the image to have `jq` utility available:
       image: salesforce/cli:2.67.7-full
     env:
-      DEVHUB_SFDX_AUTH_URL: ${{ secrets.DEVHUB_SFDX_AUTH_URL }}
+      DEVHUB_SFDX_AUTH_URL: ${{ secrets.DEVHUB_SFDX_URL }}
       SCRATCH_ORG_POOL_TAG: dev
       CREATION_METHOD: ${{ inputs.creation-method }}
     steps:
       - name: Ensure Presence of Required Inputs
         run: |
           status=0
-          if [ -z "$DEVHUB_SFDX_AUTH_URL" ]; then
-            echo '::error::"DEVHUB_SFDX_AUTH_URL" secret not set.'
+          if [ -z "$DEVHUB_SFDX_URL" ]; then
+            echo '::error::"DEVHUB_SFDX_URL" secret not set.'
             status=1
           fi
           exit $((status))
       - name: Checkout the Codebase
         uses: actions/checkout@v3
       - name: Authorize to the DevHub (SFDX Auth URL)
-        if: ${{ env.DEVHUB_SFDX_AUTH_URL }}
+        if: ${{ env.DEVHUB_SFDX_URL }}
         run: |
-          printf %s "$DEVHUB_SFDX_AUTH_URL" \
+          printf %s "$DEVHUB_SFDX_URL" \
           | sf org login sfdx-url \
             --json \
             --set-default-dev-hub \
