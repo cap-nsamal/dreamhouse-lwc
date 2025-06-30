@@ -4,12 +4,29 @@ name: Dev Org Creation
 # Definition when the workflow should run
 on:
     workflow_dispatch:
-    push:
-        branches:
-            - main
-        paths-ignore:
-            - 'sfdx-project.json'
-            - 'README.md'
+     inputs:
+      creation-method:
+        type: choice
+        default: snapshot
+        options:
+          - snapshot
+          - clean
+        description: >-
+          ========================================
+          Creation Method - technology used to create a Scratch Org.
+          ----------------------------------------
+          1. "clean" - Scratch Org will be created from scratch; this is the
+          slowest but most stable.
+          ----------------------------------------
+          2. "snapshot" - Scratch Org will be created from a Snapshot; package
+          dependencies will already be pre-installed; this is quicker, but
+          Snapshots are still an experimental Salesforce feature.
+      user-emails:
+        type: string
+        description: >-
+          ========================================
+          User Emails - optional whitespace-separated list of e-mail addresses,
+          for which separate extra users will be created in the scratch Org.
 
 # Jobs to be executed
 jobs:
