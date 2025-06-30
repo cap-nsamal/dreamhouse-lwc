@@ -95,8 +95,8 @@ jobs:
               run: sf org create scratch -f config/project-scratch-def.json -a scratch-org -d -y 1
               
             # Create New User
-            - name: 'Create New User'
-              run: sf org create user username=samal.nihar@gmail.com email=samal.nihar@gmail.com generatepassword=true --set-unique-username
+           # - name: 'Create New User'
+            #  run: sf org create user username=samal.nihar@gmail.com email=samal.nihar@gmail.com generatepassword=true --set-unique-username
             
             # Apply PreDeployment Steps in default org
             - name: 'Apply Pre-Deployment step'
