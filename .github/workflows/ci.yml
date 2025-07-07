@@ -99,8 +99,8 @@ jobs:
             #  run: sf org create user username=samal.nihar@gmail.com email=samal.nihar@gmail.com generatepassword=true --set-unique-username
             
             # Apply PreDeployment Steps in default org
-            # - name: 'Apply Pre-Deployment step'
-             # run: sf org disable tracking
+            - name: 'Apply Pre-Deployment step'
+              run: sf org disable tracking
            
             # Deploy source to dev org
             - name: 'Push source to dev org'
