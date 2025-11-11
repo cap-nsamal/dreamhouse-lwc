@@ -604,7 +604,7 @@
                 </value>
             </inputParameters>
             <inputParameters>
-                <name>multiple</name>
+                <name>single</name>
                 <value>
                     <booleanValue>true</booleanValue>
                 </value>
