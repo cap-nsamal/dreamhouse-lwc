@@ -265,7 +265,7 @@
         <name>get_main_content_version</name>
         <label>Get Main Content Version</label>
         <locationX>314</locationX>
-        <locationY>1118</locationY>
+        <locationY>2345</locationY>
         <assignNullValuesIfNoRecordsFound
         >false</assignNullValuesIfNoRecordsFound>
         <connector>
